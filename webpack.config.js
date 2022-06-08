@@ -1,6 +1,7 @@
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const path = require("path");
 const webpack = require("webpack");
+const WebpackPwaManifest = require("webpack-pwa-manifest");
 
 const config = {
   entry: {
@@ -48,6 +49,25 @@ const config = {
           }),
           new BundleAnalyzerPlugin({
             analyzerMode: "static", // will generate a report.html file in the dist folder
+          }),
+          new WebpackPwaManifest({
+            name: "Food Event",
+            short_name: "Foodies",
+            description: "An app that allows you to view upcoming food events.",
+            start_url: "../index.html",
+            background_color: "#01579b",
+            theme_color: "#ffffff",
+            //Fingerprints tell webpack whether or not it should generate unique fingerprints so that each time a new manifest is generated, it looks like this: manifest.lhge325d.json
+            fingerprints: false,
+            //inject property determines whether the link to the manifest.json is added to the HTML
+            inject: false,
+            icons: [{
+              //path of the image we want to use
+              src: path.resolve("assets/img/icons/icon-512x512.png"),
+              sizes: [96, 128, 192, 256, 384, 512],
+              //where icons will be sent
+              destination: path.join("assets", "icons")
+            }]
           })
     ],
     mode: 'development'
